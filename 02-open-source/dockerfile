@@ -1,0 +1,11 @@
+FROM ollama/ollama
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates && \
+    update-ca-certificates
+RUN update-ca-certificates -v
+RUN dpkg-reconfigure ca-certificates
+RUN mkdir -p /root/.ollama/
+RUN echo '{ "apiEndpoint": "https://registry.ollama.com/v2/library" }' > /root/.ollama/config.json
+ENV OLLAMA_API_ENDPOINT="https://registry.ollama.com/v2/library"
+RUN openssl s_client -connect registry.ollama.com:443 -showcerts
+
